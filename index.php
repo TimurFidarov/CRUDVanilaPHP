@@ -12,7 +12,6 @@ require_once ROOT.DS.'config'.DS.'config.php';
 session_start();
 
 
-
 //Autoload function
 function autoload($className)
 {
