@@ -4,11 +4,16 @@ namespace Controllers;
 use Core\Controller;
 use \Models\User;
 
-class HomeController  {
+class HomeController extends Controller{
 
     public function indexAction()
     {
-        echo "here";
+
+
+        $projects =  \Models\Task::show();
+
+        $this->view->render('home', $projects);
+
     }
 
 }

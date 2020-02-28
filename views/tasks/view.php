@@ -53,6 +53,10 @@
 
     <?php
 
+    $page = htmlspecialchars($_GET['page']);
+    $prevPage = $page - 1;
+    $nextPage = $page +1;
+
     foreach($tasks as $task)
     {
 
@@ -74,9 +78,7 @@
                     </div>
                     <?php
                 }
-
                 ?>
-
                 <?php if($task['completed'])
                 {
                     ?>
@@ -87,24 +89,23 @@
                 }
                 ?>
 
-
                 <?php if($user->admin)
                 {
                     ?>
 
-                    <div class="d-flex bd-highlight">
-                        <form method="POST" action="<?= PROOT . 'task/redact/' . $task['id']?>" class="p-2 w-100 bd-highlight">
-                            <input name="body" value="<?=$task['body']?>" class="form-control onChange="this.form.submit()" <?= $task['completed'] ? 'text-secondary' : '' ?> ">
-                        </form>
-                        <form method="POST" action="<?= PROOT . 'task/complete/' . $task['id']?>" class="p-2 flex-shrink-1 bd-highlight">
-                            <input type="checkbox" class="bd-highligh"   onChange="this.form.submit()" <?= $task['completed'] ? 'checked': '' ?>>
-                        </form>
+                        <div class="d-flex bd-highlight">
+                            <form method="POST" action="<?= PROOT . 'task/redact/' . $task['id']?>" class="p-2 w-100 bd-highlight">
+                                <input name="body" value="<?=$task['body']?>" class="form-control onChange="this.form.submit()" <?= $task['completed'] ? 'text-secondary' : '' ?> ">
+                            </form>
+                            <form method="POST" action="<?= PROOT . 'task/complete/' . $task['id']?>" class="p-2 flex-shrink-1 bd-highlight">
+                                <input type="checkbox" class="bd-highligh"   onChange="this.form.submit()" <?= $task['completed'] ? 'checked': '' ?>>
+                            </form>
+                        </div>
+
+
                     </div>
-
-
-                </div>
                 <?php
-                   }else{
+            }else{
                 ?>
                 <div>
                     <p class="form-control  <?= $task['completed'] ? 'text-secondary' : '' ?> "><?=$task['body']?></p>
@@ -123,14 +124,6 @@
 
 
     <?php
-    if(isset($_SESSION['task_created']))
-    {
-        echo '<script type="text/javascript">';
-        echo "alert('Congratulations! You created a new task.')";
-        echo '</script>';
-        unset($_SESSION['task_created']);
-    }
-
 
     if(isset($_SESSION['errors']))
     {
@@ -139,15 +132,20 @@
     }
     ?>
     <div>
+        <a href="<?= PROOT . 'task/view/?page=' . $prevPage?>">Prev page </a>
+
         <?php
         $rows = \Models\Task::countRows();
         $lastPage = ceil($rows / 3);
-        if($rows > 3)
+
+
+
+        if($rows > ($page * 3))
         {
-        ?>
-        <a href="<?= PROOT . 'task/view/?page=2'?>">Next page </a>
-        <a href="<?= PROOT . 'task/view/?page='.$lastPage?>">Last page</a>
-                <?php
+            ?>
+            <a href="<?= PROOT . 'task/view/?page='.$nextPage?>">Next page </a>
+            <a href="<?= PROOT . 'task/view/?page='.$lastPage?>">Last page</a>
+            <?php
         }
         ?>
     </div>

@@ -4,7 +4,7 @@ namespace Core;
 class View
 {
 
-    public function render($viewName, $user = null, $errors = []) {
+    public function render($viewName, $tasks = [], $errors = [], $page = 1) {
         $viewAry = explode('/', $viewName);
         $viewString = implode(DS, $viewAry);
         if(file_exists(ROOT . DS . 'views' . DS . $viewString . '.php')) {

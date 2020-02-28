@@ -29,4 +29,12 @@ class Controller {
             echo '</noscript>';exit;
         }
     }
+
+
+    public static function back()
+    {
+        $url = explode('localhost'. PROOT, $_SERVER['HTTP_REFERER']);
+
+        self::redirect($url[1]);
+    }
 }

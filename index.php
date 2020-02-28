@@ -22,6 +22,7 @@ function autoload($className)
     if(file_exists($path))
     {
         require_once($path);
+
     }
 }
 spl_autoload_register('autoload');
@@ -31,5 +32,10 @@ spl_autoload_register('autoload');
 
 $url = isset($_SERVER['PATH_INFO']) ? explode('/', ltrim($_SERVER['PATH_INFO'], '/')) : [];
 
+
+if(!isset($_SESSION['user']) && isset($_COOKIE['remember']))
+{
+    \Models\User::loginFromCookie();
+}
 
 Router::route($url);
